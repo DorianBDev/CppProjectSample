@@ -1,4 +1,5 @@
 
+
 # C/C++ Project Sample (with CMake)
 This is a sample *C/C++* project that use CMake with a **in module** organization.
 
@@ -103,3 +104,7 @@ On linux :
 (for linux care you have already the package to compile c++ in 32bits, otherwise you need this two packages : *sudo apt-get install libc6-dev-i386* and *sudo apt-get install g++-7-multilib*
  
 You already got two folder in the *build/* directory for *x64* and *x86*.
+
+### Other
+
+ - **If you want to add a file with Visual Studio, add it manually and not in VS !**
