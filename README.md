@@ -1,3 +1,4 @@
+
 # C/C++ Project Sample (with CMake)
 This is a sample *C/C++* project that use CMake with a **in module** organization.
 
@@ -83,4 +84,22 @@ To configure you module you need to set the target type :
 
 [YOUR DEPENDENCIES LIST] need to be like this : name_of_the_dependency_1;name_of_the_dependency_2... See the **Add dependencies** point for more.
 **Write *NONE* if you have no dependencies**
-  
+
+### Compile for 32 or 64 bits
+
+To compile for *32* or *64 bits* you need :
+
+On windows :
+
+ - Build your project for *Visual Studio [VERSION] ARM* for *x86*
+ - Build your project for *Visual Studio [VERSION] WIN64* for *x64*
+
+On linux :
+
+ - Build your project with CMake normaly for *x64*
+ - Build your project with CMake with the options :
+ *-DCMAKE_CXX_FLAGS=-m32 -DCMAKE_C_FLAGS=-m32* for *x86*
+
+(for linux care you have already the package to compile c++ in 32bits, otherwise you need this two packages : *sudo apt-get install libc6-dev-i386* and *sudo apt-get install g++-7-multilib*
+ 
+You already got two folder in the *build/* directory for *x64* and *x86*.
