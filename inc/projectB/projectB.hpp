@@ -1,0 +1,1 @@
+void __declspec(dllexport) printlol();
