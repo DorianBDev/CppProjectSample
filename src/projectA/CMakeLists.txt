@@ -22,6 +22,13 @@ set(TARGET_TYPE "EXE" CACHE STRING "Type of the target : EXE for executable and 
 # DOC : List of others dependencies name (CARE : YOU NEED TO HAVE A ';' BETWEEN EACH DEPENDENCY)
 set(TARGET_DEPENDENCIES "OpenCL;projectB" CACHE STRING "List of others dependencies name." FORCE)
 
+################################################
+# if dependencies
+
+# Optional
+# DOC : Add a macro definition for this target when his type is a shared library.
+set(TARGET_MACRO_DEF "" CACHE STRING "Add a macro definition for this target when his type is a shared library." FORCE)
+
 ############################################################################
 
 
@@ -103,6 +110,7 @@ if("${TARGET_TYPE}" MATCHES "EXE")
 	add_executable(${PROJECT_FOLDER_NAME} ${ALL_FILES})
 elseif("${TARGET_TYPE}" MATCHES "LIB:SHARED")
 	add_library(${PROJECT_FOLDER_NAME} SHARED ${ALL_FILES})
+	add_definitions("-D${TARGET_MACRO_DEF}")
 elseif("${TARGET_TYPE}" MATCHES "LIB:STATIC")
 	add_library(${PROJECT_FOLDER_NAME} STATIC ${ALL_FILES})
 elseif("${TARGET_TYPE}" MATCHES "LIB:MODULE")
