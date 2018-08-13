@@ -31,6 +31,10 @@ set(TARGET_MACRO_DEF "" CACHE STRING "Add a macro definition for this target whe
 
 ############################################################################
 
+################################################
+# Target prefix
+# DOC : the prefix in the output name.
+set(TARGET_PREFIX "" CACHE STRING "the prefix in the output name." FORCE)
 
 
 
@@ -177,3 +181,6 @@ set_target_properties(${PROJECT_FOLDER_NAME}																												# Output
 ############################################################################
 set_target_properties(${PROJECT_FOLDER_NAME} PROPERTIES LINKER_LANGUAGE CXX)														# Linker language
 ############################################################################
+
+# prefix
+set_target_properties(${PROJECT_FOLDER_NAME} PROPERTIES PREFIX "${TARGET_PREFIX}")
