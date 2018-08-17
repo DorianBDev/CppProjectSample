@@ -1,1 +1,1 @@
-Build X86 version here
+Build Windows x86 version here.

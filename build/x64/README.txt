@@ -1,1 +1,1 @@
-Build X64 version here
+Build Windows x64 version here.
