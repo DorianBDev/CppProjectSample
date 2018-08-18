@@ -32,6 +32,7 @@ e.g. : Visual studio :
     build/
     	|	- x86/
     	|	- x64/
+		|  - .../
     inc/
     	|	- Module_A/
 	    |	- Module_B/
