@@ -268,14 +268,10 @@ CMakeTools/
 CMakeFiles/
 
 # Build
-build/x86/*
-!build/x86/README.txt
-build/x64/*
-!build/x64/README.txt
-build/linux_x64/*
-!build/linux_x64/README.txt
-build/linux_x86/*
-!build/linux_x86/README.txt
+build/*
+!build/README.txt
+!build/*/README.txt
+
 !thirdparty/**
 !src/**
 !inc/**
