@@ -1,13 +1,37 @@
-##############################################
-#
-#	By Dorian'B (Dorian Bachelot).
-#
-##############################################
-
-
+############################################################################################
+####																					####
+####   CppProjetSample																	####
+####   Copyright (C) 2018-2019  BACHELOT Dorian											####
+####																					####
+####   Permission is hereby granted, free of charge, to any person obtaining a copy		####
+####   of this software and associated documentation files (the "Software"), to deal	####
+####   in the Software without restriction, including without limitation the rights		####
+####   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell		####
+####   copies of the Software, and to permit persons to whom the Software is			####
+####   furnished to do so, subject to the following conditions:							####
+####   																					####
+####   The above copyright notice and this permission notice shall be included in all	####
+####   copies or substantial portions of the Software.									####
+####   																					####
+####   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR		####
+####   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,			####
+####   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE		####
+####   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER			####
+####   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,	####
+####   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE	####
+####   SOFTWARE.																		####
+####																					####
+####	See LICENSE file for more.														####
+####																					####
+############################################################################################
 
 
 ############################################################################
+############################################################################
+###########################   CONFIG   #####################################
+############################################################################
+############################################################################
+
 
 ################################################
 # Target type
@@ -16,26 +40,28 @@ set(TARGET_TYPE "EXE" CACHE STRING "Type of the target : EXE for executable and 
 
 
 ################################################
-# if dependencies
-
 # Dependencies list
 # DOC : List of others dependencies name (CARE : YOU NEED TO HAVE A ';' BETWEEN EACH DEPENDENCY)
 set(TARGET_DEPENDENCIES "OpenCL;projectB" CACHE STRING "List of others dependencies name." FORCE)
 
-################################################
-# if dependencies
 
+################################################
 # Optional
 # DOC : Add a macro definition for this target when his type is a shared library.
 set(TARGET_MACRO_DEF "" CACHE STRING "Add a macro definition for this target when his type is a shared library." FORCE)
 
-############################################################################
 
 ################################################
 # Target prefix
 # DOC : the prefix in the output name.
 set(TARGET_PREFIX "" CACHE STRING "the prefix in the output name." FORCE)
 
+
+############################################################################
+############################################################################
+############################################################################
+############################################################################
+############################################################################
 
 
 # Main project folder name
@@ -62,9 +88,6 @@ file(GLOB_RECURSE  HEADER_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" LIST_DIRE
 file(GLOB SHARE_HEADERS_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" LIST_DIRECTORIES false 
 	"../../inc/*"
 )
-
-# combine all files list
-set(ALL_FILES ${SRC_FILES} ${HEADER_FILES} ${SHARE_HEADERS_FILES})
 
 # include directory
 include_directories("../../inc/")
@@ -108,39 +131,14 @@ endif()
 
 ############################################################################
 
-############################################################################				# Exe or lib
-# create the project type (exe or lib)
-if("${TARGET_TYPE}" MATCHES "EXE")
-	add_executable(${PROJECT_FOLDER_NAME} ${ALL_FILES})
-elseif("${TARGET_TYPE}" MATCHES "LIB:SHARED")
-	add_library(${PROJECT_FOLDER_NAME} SHARED ${ALL_FILES})
-	add_definitions("-D${TARGET_MACRO_DEF}")
-elseif("${TARGET_TYPE}" MATCHES "LIB:STATIC")
-	add_library(${PROJECT_FOLDER_NAME} STATIC ${ALL_FILES})
-elseif("${TARGET_TYPE}" MATCHES "LIB:MODULE")
-	add_library(${PROJECT_FOLDER_NAME} MODULE ${ALL_FILES})
-else()
-	message("[ERROR] - Wrong target type for ${PROJECT_FOLDER_NAME} target...")
-endif()
-#or
-# add_library(${PROJECT_FOLDER_NAME} <SHARED|STATIC|MODULE|UNKNOWN> ${ALL_FILES})
-############################################################################
-
-############################################################################				# Dependencies
-
-if(NOT "${TARGET_DEPENDENCIES}" MATCHES "NONE")
-	TARGET_LINK_LIBRARIES(${PROJECT_FOLDER_NAME} LINK_PUBLIC "${TARGET_DEPENDENCIES}")
-endif()
-
-############################################################################
-
 ############################################################################
 # macro to keep folders tree
 macro(GroupSources _LIST)
 	foreach(SOURCE ${_LIST})
-		string(REPLACE "../../inc/${PROJECT_FOLDER_NAME}/" "" SOURCE "${SOURCE}")
-		get_filename_component(SOURCE_PATH "${SOURCE}" PATH)
-		string(REPLACE "/" "\\" GROUP_NAME "${SOURCE_PATH}")
+		get_filename_component(GROUP_NAME "${SOURCE}" PATH)
+		string(REPLACE "../../inc/${PROJECT_FOLDER_NAME}/" "" GROUP_NAME "${GROUP_NAME}")
+		string(REPLACE "../../inc/${PROJECT_FOLDER_NAME}" "" GROUP_NAME "${GROUP_NAME}")
+		string(REPLACE "/" "\\" GROUP_NAME "${GROUP_NAME}")
 		
 		# Group into "Source Files" and "Header Files"
 		if("${SOURCE}" MATCHES "CMakeLists.txt")
@@ -165,6 +163,32 @@ GroupSources("${SRC_FILES}")
 
 # group headers
 GroupSources("${HEADER_FILES}")
+
+############################################################################				# Exe or lib
+# create the project type (exe or lib)
+if("${TARGET_TYPE}" MATCHES "EXE")
+	add_executable(${PROJECT_FOLDER_NAME} ${SRC_FILES} ${HEADER_FILES} ${SHARE_HEADERS_FILES})
+elseif("${TARGET_TYPE}" MATCHES "LIB:SHARED")
+	add_library(${PROJECT_FOLDER_NAME} SHARED ${SRC_FILES} ${HEADER_FILES} ${SHARE_HEADERS_FILES})
+	add_definitions("-D${TARGET_MACRO_DEF}")
+elseif("${TARGET_TYPE}" MATCHES "LIB:STATIC")
+	add_library(${PROJECT_FOLDER_NAME} STATIC ${SRC_FILES} ${HEADER_FILES} ${SHARE_HEADERS_FILES})
+elseif("${TARGET_TYPE}" MATCHES "LIB:MODULE")
+	add_library(${PROJECT_FOLDER_NAME} MODULE ${SRC_FILES} ${HEADER_FILES} ${SHARE_HEADERS_FILES})
+else()
+	message("[ERROR] - Wrong target type for ${PROJECT_FOLDER_NAME} target...")
+endif()
+#or
+# add_library(${PROJECT_FOLDER_NAME} <SHARED|STATIC|MODULE|UNKNOWN> ${ALL_FILES})
+############################################################################
+
+############################################################################				# Dependencies
+
+if(NOT "${TARGET_DEPENDENCIES}" MATCHES "NONE")
+	TARGET_LINK_LIBRARIES(${PROJECT_FOLDER_NAME} LINK_PUBLIC "${TARGET_DEPENDENCIES}")
+endif()
+
+############################################################################
 
 # installation specifications
 install (TARGETS ${PROJECT_FOLDER_NAME} DESTINATION ../../out/bin)
